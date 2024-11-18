@@ -21,7 +21,7 @@ function middleware(req, res, next) {
             });
             return;
         }
-        req.user = decoded;
+        req.body.users = decoded;
         console.log("Token is valid:", decoded);
         next();
     });
