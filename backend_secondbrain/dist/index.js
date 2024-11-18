@@ -5,10 +5,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
+const authRoute_1 = require("./route/authRoute");
+const db_1 = require("./db/db");
 const PORT = 5200;
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
+(0, db_1.ConnectToMongo)();
+app.use('/api/v1/', authRoute_1.authRoute);
 app.listen(PORT, () => {
     console.log("listning to port", PORT);
 });
