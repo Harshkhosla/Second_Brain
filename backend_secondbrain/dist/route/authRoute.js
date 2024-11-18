@@ -17,7 +17,9 @@ const express_1 = require("express");
 const zod_1 = require("../utils/zod");
 const User_1 = require("../modals/User");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const route = (0, express_1.Router)();
+const kEY = "harsh";
 route.post('/signup', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const body = req.body;
@@ -47,6 +49,47 @@ route.post('/signup', (req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.status(201).json({
             message: `User have been created `,
             UserCreated
+        });
+        return;
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Server error",
+            error
+        });
+        return;
+    }
+}));
+route.post('/signin', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const body = req.body;
+        const ParsedData = zod_1.UserSignin.safeParse(body);
+        if (!ParsedData.success) {
+            res.status(511).json({
+                message: ParsedData.error.errors[0].message
+            });
+            return;
+        }
+        const { email, password } = req.body;
+        const UserDetailsfound = yield User_1.UserDetails.findOne({ email: email });
+        if (!UserDetailsfound) {
+            res.status(404).json({
+                message: "User not found"
+            });
+            return;
+        }
+        const passwordCorrect = yield bcryptjs_1.default.compare(password, UserDetailsfound === null || UserDetailsfound === void 0 ? void 0 : UserDetailsfound.password);
+        if (!passwordCorrect) {
+            res.status(403).json({
+                message: "Wrong email password"
+            });
+            return;
+        }
+        const JWT_Token = jsonwebtoken_1.default.sign({ email: email }, kEY);
+        res.status(200).json({
+            message: "Sign-in successful",
+            JWT_Token
         });
         return;
     }
