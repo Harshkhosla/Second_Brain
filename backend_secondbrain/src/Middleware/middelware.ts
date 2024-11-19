@@ -3,14 +3,17 @@ import Jwt, { JwtPayload } from "jsonwebtoken";
 const kEY = "harsh"
 
 
-interface CustomRequest extends Request {
+export interface CustomRequest extends Request {
     user?: string | JwtPayload;
 }
 
-function middleware(req: CustomRequest, res: Response, next: NextFunction): void {
 
 
+export class middleware {
 
+
+public static Middleware= async(req: CustomRequest, res: Response, next: NextFunction)=> {
+    
     const token = req.headers.authorization?.split(' ').at(1);
     if (!token) {
         res.status(401).json({
@@ -34,4 +37,7 @@ function middleware(req: CustomRequest, res: Response, next: NextFunction): void
 
 }
 
-export default middleware;
+}
+
+
+
