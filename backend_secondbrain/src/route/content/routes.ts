@@ -84,4 +84,10 @@ export class ContentRoutes{
     }
 
 
+    public static Deletecontent= async(req:Request, res:Response)=> {
+        
+
+    }
+
+
 }
