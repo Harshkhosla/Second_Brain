@@ -9,6 +9,7 @@ export class ContentRouter{
         this.router.use(middleware.Middleware)
         this.router.post('/create',ContentRoutes.content)
         this.router.get('/getall',ContentRoutes.GetAllContent)
+        this.router.delete('/delete/:id',ContentRoutes.Deletecontent)
 
     }
 }
