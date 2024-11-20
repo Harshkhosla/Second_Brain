@@ -21,12 +21,12 @@ export default function Button({ placeholder, onClick, Icon, variant = "primary"
 
     const sizeClass = {
         small: 'px-2 py-1 text-sm',
-        medium: 'px-4 py-2 text-base',
+        medium: 'md:px-4 px-1 py-2 text-base',
         large: 'px-6 py-3 text-lg',
     }
     return (
         <div >
-            <button onClick={onClick} className={`flex  items-center rounded-lg ${sizeClass[size]} ${VariantsButton[variant]} px-4 py-2 text-lg font-medium `}>
+            <button onClick={onClick} className={`flex  items-center rounded-lg ${sizeClass[size]} ${VariantsButton[variant]} md:px-4 md:py-2 text-sm md:text-lg font-medium `}>
                 <div className='mr-2'>
                     {Icon}
                 </div>

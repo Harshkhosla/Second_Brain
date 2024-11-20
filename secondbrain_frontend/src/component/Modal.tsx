@@ -2,6 +2,7 @@
 
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { Form } from './ui/Form';
+import { ImCross } from "react-icons/im";
 
 interface Modalprops {
     open: boolean
@@ -31,13 +32,15 @@ export const Modal = ({ open, setOpen, title, form }: Modalprops) => {
                             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                 <div className="sm:flex items-center justify-center ">
                                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                    <div className='flex justify-end items-start' onClick={() => setOpen(false)}><ImCross /></div>
                                         <DialogTitle as="h3" className="text-base font-semibold text-gray-900">
                                             {title}
                                         </DialogTitle>
                                         {
                                             form ?
                                                 <div className="mt-2">
-                                                    <Form />
+                                                   
+                                                    <Form open={open}  setOpen={setOpen}/>
                                                 </div>
                                                 :
                                                 <div className="mt-2">

@@ -7,7 +7,12 @@ interface FormValues {
     link: string
     type: string
 }
-export const Form = () => {
+
+interface Formprops {
+    open: boolean
+    setOpen: (value: boolean) => void;
+}
+export const Form = ({open,setOpen}:Formprops) => {
     const {createBrain}= useBrain()
     const { register, handleSubmit, reset, formState: { errors } } = useForm<FormValues>();
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
@@ -16,13 +21,13 @@ export const Form = () => {
             tags: data.tags.split(",").map((tag) => tag.trim()),
         };
         const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyRGV0YWlsc2ZvdW5kIjp7Il9pZCI6IjY3M2M1ZTk3Y2Q2NDgwZGVmMWI0NzM0MyIsInVzZXJuYW1lIjoiaGFkZGVzcnNoaCIsImVtYWlsIjoiaHNzZGRkZHdoQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJhJDEwJC5VL3lGWEI0RDJJV3hmTktPMkpxMC5CY3pBd1dMRERCLlNla3dTUEZVTlVISVI2bld4S3lhIiwiX192IjowfSwiaWF0IjoxNzMyMDE4MzczfQ.n2Enl6Er4MJTLOX9aE2qKBI4HyNy4FpLDx6ruh_Cobk"
-       
         createBrain(processedData,token)
-
+        setOpen(!open)
         reset();
     };
     return (
         <div className="w-full mx-auto">
+            
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Title</label>
