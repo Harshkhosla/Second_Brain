@@ -2,12 +2,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { createBrain, deleteBrain, getBrain } from '../../api/brainAPI';
 
 export interface Tags {
-    id: string; 
-    title: string; 
+    id: string;
+    title: string;
 }
 export interface Brain {
     id: string;
-    _id: string; 
+    _id: string;
     title: string;
     tags: Tags[];
     link: string;
@@ -15,7 +15,7 @@ export interface Brain {
 }
 
 interface BrainState {
-    brains: Brain[] ;
+    brains: Brain[];
     loading: boolean;
     error: string | null;
 }
@@ -45,13 +45,13 @@ export const createBrainAsync = createAsyncThunk(
 
 export const deleteBrainAsync = createAsyncThunk(
     'brain/deleteBrain',
-    async({token,id}:{token:string,id:string},thunkAPI)=>{
-        try{
-            const response = await deleteBrain(token,id);
+    async ({ token, id }: { token: string, id: string }, thunkAPI) => {
+        try {
+            const response = await deleteBrain(token, id);
             console.log(response.updateddata);
-            return response.updateddata ;
+            return response.updateddata;
 
-        }catch(error:any){
+        } catch (error: any) {
             return thunkAPI.rejectWithValue(error.message);
         }
     }
@@ -80,7 +80,7 @@ const brainSlice = createSlice({
             })
             .addCase(createBrainAsync.fulfilled, (state, action) => {
                 state.loading = false;
-                state.brains.push(action.payload);  
+                state.brains.push(action.payload);
             })
             .addCase(createBrainAsync.rejected, (state, action) => {
                 state.loading = false;
@@ -102,7 +102,7 @@ const brainSlice = createSlice({
             })
             .addCase(deleteBrainAsync.fulfilled, (state, action) => {
                 state.loading = false;
-             state.brains=state.brains.filter((data)=>data._id!==action.payload._id);
+                state.brains = state.brains.filter((data) => data._id !== action.payload._id);
             })
             .addCase(deleteBrainAsync.rejected, (state, action) => {
                 state.loading = false;
