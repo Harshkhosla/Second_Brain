@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { createBrain, deleteBrain, getBrain } from '../../api/brainAPI';
+import { createBrain, deleteBrain, getBrain, getLinkUrl } from '../../api/brainAPI';
 
 export interface Tags {
     id?: string;
@@ -18,6 +18,7 @@ export interface Apidetails {
     data?: any,
     token: string
     id?: string
+    uid?: string
 }
 
 
@@ -25,10 +26,12 @@ interface BrainState {
     brains: Brain[];
     loading: boolean;
     error: string | null;
+    Links?:string
 }
 
 const initialState: BrainState = {
     brains: [],
+    Links:"",
     loading: false,
     error: null,
 };
@@ -77,6 +80,20 @@ export const getBrainDataAync = createAsyncThunk(
     }
 )
 
+export const getSharableLinkAsync = createAsyncThunk(
+    'share/BrainId',
+    async ({  uid,token }: { uid: string, token?: string }, thunkAPI) => {
+        try {
+            console.log(uid,token,"askdjcnsasajnjsad");
+            
+            const response = await getLinkUrl( uid,token);
+            return response?.shareableUrl
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(error.message);
+        }
+    }
+)
+
 
 const brainSlice = createSlice({
     name: 'brain',
@@ -89,9 +106,7 @@ const brainSlice = createSlice({
             })
             .addCase(createBrainAsync.fulfilled, (state, action) => {
                 state.loading = false;
-                // console.log(action.payload,"hartshsample");
                 state.brains.push(action.payload);
-                // console.log(state.brains,"hartshsamplestatebrain");
             })
             .addCase(createBrainAsync.rejected, (state, action) => {
                 state.loading = false;
@@ -116,6 +131,19 @@ const brainSlice = createSlice({
                 state.brains = state.brains.filter((data) => data._id !== action.payload._id);
             })
             .addCase(deleteBrainAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+            .addCase(getSharableLinkAsync.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getSharableLinkAsync.fulfilled, (state, action) => {
+                state.loading = false;
+                console.log(action.payload);
+                
+                state.Links = action.payload;
+            })
+            .addCase(getSharableLinkAsync.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             });

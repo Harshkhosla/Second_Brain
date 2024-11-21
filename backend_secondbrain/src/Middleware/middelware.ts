@@ -31,6 +31,7 @@ public static Middleware= async(req: CustomRequest, res: Response, next: NextFun
         }
 
         req.body.users = decoded;
+        req.body.token=token
         console.log("Token is valid:", decoded);
         next();
     })

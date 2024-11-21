@@ -37,6 +37,7 @@ middleware.Middleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
             return;
         }
         req.body.users = decoded;
+        req.body.token = token;
         console.log("Token is valid:", decoded);
         next();
     });
