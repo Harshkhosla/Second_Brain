@@ -1,4 +1,5 @@
-const API_BASE_URL = "http://localhost:5200/api/v1";
+// const API_BASE_URL = "http://localhost:5200/api/v1";
+const API_BASE_URL = "http://18.212.238.96:5001/api/v1";
 
 
 export const createBrain = async (data: any, token: string) => {
