@@ -18,5 +18,6 @@ export const Header = ({ shareLink, addContent }: Headerprops) => {
                 <Button placeholder={"Add Content"} Icon={<FaPlus />} onClick={addContent} variant={"secondary"} />
             </div>
         </div>
+
     )
 }

@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { createBrain, deleteBrain, getBrain } from '../../api/brainAPI';
 
 export interface Tags {
-    id: string;
+    id?: string;
     title: string;
 }
 export interface Brain {
@@ -13,6 +13,13 @@ export interface Brain {
     link: string;
     type: string;
 }
+
+export interface Apidetails {
+    data?: any,
+    token: string
+    id?: string
+}
+
 
 interface BrainState {
     brains: Brain[];
@@ -28,14 +35,16 @@ const initialState: BrainState = {
 
 
 
-
 export const createBrainAsync = createAsyncThunk(
     'brain/createBrain',
-    async ({ data, token }: { data: any; token: string }, thunkAPI) => {
+    async ({ data, token }: Apidetails, thunkAPI) => {
         try {
             const response = await createBrain(data, token);
-            // console.log(response.ContentCreated, "sdkccjdvsnd");
-
+            let changeddata: Tags[] = [];
+            data.tags.map((data: string) => (
+                changeddata.push({ "title": data })
+            ))
+            response.ContentCreated.tags = [...changeddata]
             return response.ContentCreated;
         } catch (error: any) {
             return thunkAPI.rejectWithValue(error.message);
@@ -58,7 +67,7 @@ export const deleteBrainAsync = createAsyncThunk(
 )
 export const getBrainDataAync = createAsyncThunk(
     'brain/getData',
-    async ({ token }: { token: string }, thunkAPI) => {
+    async ({ token }: Apidetails, thunkAPI) => {
         try {
             const response = await getBrain(token);
             return response.message
@@ -80,7 +89,9 @@ const brainSlice = createSlice({
             })
             .addCase(createBrainAsync.fulfilled, (state, action) => {
                 state.loading = false;
+                // console.log(action.payload,"hartshsample");
                 state.brains.push(action.payload);
+                // console.log(state.brains,"hartshsamplestatebrain");
             })
             .addCase(createBrainAsync.rejected, (state, action) => {
                 state.loading = false;
