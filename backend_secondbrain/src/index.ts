@@ -3,7 +3,7 @@ import cors from "cors"
 import { ConnectToMongo } from "./db/db";
 import { api } from "./route/api";
 
-const PORT = 5200;
+const PORT = 5001;
 
 const app = express();
 
